@@ -1,5 +1,7 @@
 # Coffee Maestro
 
+[![CI](https://github.com/Amitabh-Javer85/Coffee-Maestro/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Amitabh-Javer85/Coffee-Maestro/actions/workflows/ci.yml)
+
 A multimodal RAG assistant for the Saeco GranAroma 6850 manual, built with Vertex AI Gemini Embedding 2, Pinecone, a configurable answer provider, FastAPI, and React.
 
 ## Demo
