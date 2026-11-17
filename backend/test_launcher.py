@@ -2,6 +2,7 @@
 import importlib.util
 from pathlib import Path
 import runpy
+import subprocess
 import json
 from unittest.mock import patch
 
@@ -12,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_desktop_launcher_owns_the_single_browser_open(monkeypatch):
+    # Supply the Windows flag when the process boundary is mocked on Linux.
+    monkeypatch.setattr(subprocess, "CREATE_NEW_CONSOLE", 0x10, raising=False)
     monkeypatch.delenv("COFFEE_MAESTRO_PYTHON", raising=False)
     monkeypatch.syspath_prepend(str(ROOT))
     spec = importlib.util.spec_from_file_location("coffee_launcher", ROOT / "start_app.py")
@@ -71,6 +74,8 @@ def test_backend_respects_browser_ownership(monkeypatch, browser_setting, expect
 
 @pytest.mark.parametrize("exists", [True, False])
 def test_launcher_honors_explicit_interpreter_before_touching_port(monkeypatch, tmp_path, exists):
+    # Supply the Windows flag when the process boundary is mocked on Linux.
+    monkeypatch.setattr(subprocess, "CREATE_NEW_CONSOLE", 0x10, raising=False)
     monkeypatch.syspath_prepend(str(ROOT))
     interpreter = tmp_path / "Python runtime" / "python.exe"
     if exists:
