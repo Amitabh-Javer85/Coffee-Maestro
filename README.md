@@ -6,6 +6,8 @@ A multimodal RAG assistant for the Saeco GranAroma 6850 manual, built with Verte
 
 ## Demo
 
+![Coffee Maestro demonstration](docs/coffee-maestro-demo.gif)
+
 ![Coffee Maestro showing a demo question, a cited answer and an original reference figure](docs/coffee-maestro-demo.png)
 
 The React interface is running against a synthetic API fixture. Codex wrote the example answer and figure for a fictional brewer. The capture contains no manufacturer manual pages, device photography, or live cloud output.
