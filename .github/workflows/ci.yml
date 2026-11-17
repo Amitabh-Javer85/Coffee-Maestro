@@ -1,0 +1,50 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: CI checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      API_SECRET_KEY: offline-test-placeholder
+      RUN_LIVE_RAG_TESTS: '0'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Backend tests
+        working-directory: backend
+        run: |
+          python -m pip install -r requirements.txt
+          python -m pip check
+          python -m pytest -q
+      - name: Frontend checks
+        working-directory: frontend
+        run: |
+          npm ci --no-audit
+          npm audit --audit-level=low
+          npm run lint
+          npm test
+          npm run build
+      - name: Container startup
+        run: |
+          docker build --tag coffee-maestro --file backend/Dockerfile .
+          docker run --detach --rm --name coffee-maestro -p 127.0.0.1:8000:8000 coffee-maestro
+          trap 'docker logs coffee-maestro; docker stop coffee-maestro' EXIT
+          curl --fail --silent --show-error --retry 12 --retry-all-errors --retry-delay 2 http://127.0.0.1:8000/health
+          curl --fail --silent --show-error http://127.0.0.1:8000/ | grep -q 'id="root"'

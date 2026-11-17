@@ -1,0 +1,19 @@
+{
+  "display_name": "Coffee Maestro Manual RAG",
+  "ownership_marker": "Managed by Google RAG backend/provision_conversation.py; dedicated Coffee Maestro manual answer agent.",
+  "default_language_code": "en",
+  "time_zone": "Africa/Johannesburg",
+  "event_name": "RAG_ANSWER",
+  "generator_input_parameters": {
+    "question": "$session.params.question",
+    "manual_evidence": "$session.params.manual_evidence"
+  },
+  "welcome_message": "Hello, I’m Coffee Maestro. Ask about operating, cleaning, descaling or troubleshooting your Saeco GranAroma 6850 in the Coffee Maestro app so I can retrieve the manual and cite its pages.",
+  "no_match_message": "Please ask your question in the Coffee Maestro app so I can check the manual. Include what the machine is doing and any displayed message.",
+  "no_input_message": "Open the Coffee Maestro app and enter a question about your Saeco GranAroma 6850 so I can retrieve the manual and cite its pages.",
+  "environment_display_name": "coffee-maestro-production",
+  "generator_display_name_prefix": "Coffee Maestro grounded manual answer",
+  "temperature": 0.1,
+  "max_decode_steps": 2048,
+  "application_max_payload_bytes": 16384
+}

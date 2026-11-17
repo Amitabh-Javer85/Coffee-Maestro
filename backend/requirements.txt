@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+python-dotenv
+google-cloud-aiplatform
+PyMuPDF
+pymupdf4llm
+langchain-text-splitters
+pinecone
+python-multipart
+slowapi
+python-json-logger
+pydantic
+google-genai
+google-cloud-dialogflow-cx>=2.9.0,<3
+requests
+pytest
+httpx
