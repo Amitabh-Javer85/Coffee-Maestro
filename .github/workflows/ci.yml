@@ -42,7 +42,7 @@ jobs:
         working-directory: frontend
         run: |
           npm ci --no-audit
-          npm audit --audit-level=low
+          python ../scripts/audit_frontend.py
           npm run lint
           npm test
           npm run build
