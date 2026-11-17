@@ -16,25 +16,7 @@ Coffee Maestro answers natural-language questions about operating and maintainin
 
 ## Workflow and architecture
 
-```mermaid
-flowchart TD
-    PDF["User-supplied PDF"] --> Extract["PyMuPDF4LLM: Markdown; PyMuPDF: metadata and images"]
-    Extract --> Chunk["Heading-aware sections and overlapping text chunks"]
-    Chunk --> Embed["Vertex AI Gemini Embedding 2: 768 dimensions"]
-    Embed --> Store["Pinecone vectors and metadata"]
-    Extract --> Images["Local extracted images"]
-    UI["React interface"] --> API["FastAPI"]
-    API --> Query["Gemini Embedding 2 search-query embedding"]
-    Query --> Retrieve["Separate text and image searches"]
-    Store --> Retrieve
-    Retrieve --> Context["Context stage: snippets and image filenames"]
-    Context --> Gemini["Selected answer provider: Gemini or Dialogflow CX"]
-    Gemini --> Quality["Missing-content quality checks"]
-    Quality --> Response["Answer, citations, warnings, stage trace"]
-    Response --> UI
-    Images --> Route["FastAPI image route"]
-    Route --> UI
-```
+![Architecture diagram](docs/architecture.png)
 
 PDF text is converted to Markdown, split at headings, then split into configurable overlapping chunks. Gemini Embedding 2 creates 768-dimensional text and image vectors. The [pipeline stages](backend/agents/multi_agent_rag.py) execute sequentially; only synthesis calls a generative model. Images participate in retrieval and display, but the selected synthesis provider receives textual evidence and image references, not diagram pixels. Retrieved text is sent in full by default (`CONTEXT_SNIPPET_MAX_LENGTH=0`). The API returns citation metadata, warnings, and a stage trace; the UI displays the answer and images.
 
